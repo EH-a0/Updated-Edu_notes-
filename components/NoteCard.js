@@ -1,3 +1,4 @@
+// components/NoteCard.js
 const NoteCard = ({ note, onUpdate, onDelete, onPin, isPinned }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState(note.title);
@@ -35,84 +36,71 @@ const NoteCard = ({ note, onUpdate, onDelete, onPin, isPinned }) => {
         });
     };
 
-    return (
-        <div className={`note-card ${isPinned ? 'pinned' : ''}`}>
-            <div className="note-content">
-                <div className="note-header">
-                    {isEditing ? (
-                        <input
-                            type="text"
-                            value={editTitle}
-                            onChange={(e) => setEditTitle(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            className="note-title-input"
-                            placeholder="Note title..."
-                        />
-                    ) : (
-                        <h3 className="note-title">{note.title}</h3>
-                    )}
-                    <div className="note-actions">
-                        <button
-                            onClick={() => {
-                                if (isEditing) {
-                                    handleSave();
-                                } else {
-                                    setIsEditing(true);
-                                    setEditTitle(note.title);
-                                    setEditContent(note.content);
-                                }
-                            }}
-                            className="note-btn"
-                            title={isEditing ? 'Save (Ctrl+Enter)' : 'Edit note'}
-                        >
-                            <i className={isEditing ? "fas fa-save" : "fas fa-edit"}></i>
-                        </button>
-                        <button
-                            onClick={() => onPin(note.id)}
-                            className={`note-btn ${isPinned ? 'pinned' : ''}`}
-                            title={isPinned ? 'Unpin note' : 'Pin note'}
-                        >
-                            <i className={isPinned ? "fas fa-thumbtack" : "far fa-thumbtack"}></i>
-                        </button>
-                        <button
-                            onClick={() => onDelete(note.id)}
-                            className="note-btn delete"
-                            title="Delete note"
-                        >
-                            <i className="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                {isEditing ? (
-                    <textarea
-                        value={editContent}
-                        onChange={(e) => setEditContent(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        className="note-textarea"
-                        placeholder="Write your note here..."
-                    ></textarea>
-                ) : (
-                    <div className="note-text">
-                        {note.content || <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>No content</span>}
-                    </div>
-                )}
-                <div className="note-footer">
-                    <div>
-                        <div>Created: {formatDate(note.createdAt)}</div>
-                        {note.updatedAt && note.updatedAt !== note.createdAt && (
-                            <div>Updated: {formatDate(note.updatedAt)}</div>
-                        )}
-                    </div>
-                    {isPinned && (
-                        <div className="pin-badge">
-                            <i className="fas fa-thumbtack"></i>
-                            Pinned
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+    return React.createElement('div', { 
+        className: `note-card ${isPinned ? 'pinned' : ''}` 
+    },
+        React.createElement('div', { className: 'note-content' },
+            React.createElement('div', { className: 'note-header' },
+                isEditing ? 
+                    React.createElement('input', {
+                        type: 'text',
+                        value: editTitle,
+                        onChange: (e) => setEditTitle(e.target.value),
+                        onKeyDown: handleKeyDown,
+                        className: 'note-title-input',
+                        placeholder: 'Note title...'
+                    }) :
+                    React.createElement('h3', { className: 'note-title' }, note.title),
+                React.createElement('div', { className: 'note-actions' },
+                    React.createElement('button', {
+                        onClick: () => {
+                            if (isEditing) {
+                                handleSave();
+                            } else {
+                                setIsEditing(true);
+                                setEditTitle(note.title);
+                                setEditContent(note.content);
+                            }
+                        },
+                        className: 'note-btn',
+                        title: isEditing ? 'Save (Ctrl+Enter)' : 'Edit note'
+                    }, React.createElement('i', { className: isEditing ? "fas fa-save" : "fas fa-edit" })),
+                    React.createElement('button', {
+                        onClick: () => onPin(note.id),
+                        className: `note-btn ${isPinned ? 'pinned' : ''}`,
+                        title: isPinned ? 'Unpin note' : 'Pin note'
+                    }, React.createElement('i', { className: isPinned ? "fas fa-thumbtack" : "far fa-thumbtack" })),
+                    React.createElement('button', {
+                        onClick: () => onDelete(note.id),
+                        className: 'note-btn delete',
+                        title: 'Delete note'
+                    }, React.createElement('i', { className: "fas fa-trash" }))
+                )
+            ),
+            isEditing ? 
+                React.createElement('textarea', {
+                    value: editContent,
+                    onChange: (e) => setEditContent(e.target.value),
+                    onKeyDown: handleKeyDown,
+                    className: 'note-textarea',
+                    placeholder: 'Write your note here...'
+                }) :
+                React.createElement('div', { className: 'note-text' },
+                    note.content || React.createElement('span', { 
+                        style: { color: '#9ca3af', fontStyle: 'italic' } 
+                    }, 'No content')
+                ),
+            React.createElement('div', { className: 'note-footer' },
+                React.createElement('div', {},
+                    React.createElement('div', {}, `Created: ${formatDate(note.createdAt)}`),
+                    note.updatedAt && note.updatedAt !== note.createdAt && 
+                        React.createElement('div', {}, `Updated: ${formatDate(note.updatedAt)}`)
+                ),
+                isPinned && React.createElement('div', { className: 'pin-badge' },
+                    React.createElement('i', { className: 'fas fa-thumbtack' }),
+                    'Pinned'
+                )
+            )
+        )
     );
 };
-
-export default NoteCard;
