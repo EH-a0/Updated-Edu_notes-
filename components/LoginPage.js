@@ -38,11 +38,44 @@ const LoginPage = ({ onLogin }) => {
     const handleLogoClick = () => {
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         setCurrentQuote(randomQuote);
+
+        // Compute a safe position in the viewport: within margins and not under the login card
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const margin = 48; // keep away from edges
+        const qWidth = 320; // approximate width of rendered quote
+        const qHeight = 56; // approximate height of rendered quote
+        const card = document.querySelector('.login-card');
+        const cardRect = card ? card.getBoundingClientRect() : { left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0 };
+
+        const isOverlappingCard = (x, y) => {
+            const qRight = x + qWidth;
+            const qBottom = y + qHeight;
+            return !(qRight < cardRect.left || x > cardRect.right || qBottom < cardRect.top || y > cardRect.bottom);
+        };
+
+        let x = margin + Math.random() * Math.max(1, vw - 2 * margin - qWidth);
+        let y = margin + Math.random() * Math.max(1, vh - 2 * margin - qHeight);
+        let attempts = 0;
+        while (card && isOverlappingCard(x, y) && attempts < 20) {
+            x = margin + Math.random() * Math.max(1, vw - 2 * margin - qWidth);
+            y = margin + Math.random() * Math.max(1, vh - 2 * margin - qHeight);
+            attempts++;
+        }
+
+        // If still overlapping after attempts, place it above the card safely
+        if (card && isOverlappingCard(x, y)) {
+            const safeTop = Math.max(margin, cardRect.top - qHeight - 16);
+            const safeLeft = Math.min(
+                Math.max(margin, cardRect.left + (cardRect.width - qWidth) / 2),
+                vw - margin - qWidth
+            );
+            x = safeLeft;
+            y = safeTop;
+        }
+
+        setQuotePos({ left: `${x}px`, top: `${y}px` });
         setShowQuote(true);
-        // place quote at a random background position
-        const left = `${10 + Math.random() * 80}%`;
-        const top = `${10 + Math.random() * 70}%`;
-        setQuotePos({ left, top });
         setTimeout(() => setShowQuote(false), 4000);
     };
 
@@ -121,20 +154,21 @@ const LoginPage = ({ onLogin }) => {
                     }
                 }, `"${q}"`)
             ),
-            // Clicked quote in background (clear and readable)
+        // Clicked quote in background (clear and readable, never under card)
             showQuote ? React.createElement('div', {
                 key: 'clicked-quote',
                 className: 'equation',
                 style: {
                     left: quotePos.left,
                     top: quotePos.top,
-                    fontSize: '24px',
-                    color: '#7c3aed',
-                    fontWeight: 800,
-                    opacity: 0.9,
+            fontSize: '28px',
+            color: '#ffffff',
+            fontWeight: 900,
+            opacity: 1,
                     fontFamily: 'Georgia, serif',
                     fontStyle: 'normal',
-                    animation: 'fadeInUp 0.4s ease-out',
+            animation: 'fadeInUp 0.4s ease-out',
+            textShadow: '0 2px 8px rgba(0,0,0,0.35)'
                 }
             }, `"${currentQuote}"`) : null
         ),

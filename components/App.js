@@ -3,6 +3,7 @@ const App = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notes, dispatch] = useReducer(notesReducer, []);
+    const [showLanding, setShowLanding] = useState(true);
     const [isAddingNote, setIsAddingNote] = useState(false);
     const [newNote, setNewNote] = useState({ title: '', content: '' });
     const [searchTerm, setSearchTerm] = useState('');
@@ -158,6 +159,9 @@ const App = () => {
     }
 
     if (!user) {
+        if (showLanding) {
+            return React.createElement(LandingPage, { onStart: () => setShowLanding(false) });
+        }
         return React.createElement(LoginPage, { onLogin: setUser });
     }
 
