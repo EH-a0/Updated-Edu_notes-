@@ -11,6 +11,7 @@ const LoginPage = ({ onLogin }) => {
     const [currentQuote, setCurrentQuote] = useState('');
     const [sparkles, setSparkles] = useState([]);
     const [cardLoaded, setCardLoaded] = useState(false);
+    const [quotePos, setQuotePos] = useState({ left: '50%', top: '20%' });
 
     const equations = [
         'E = mc²', 'F = ma', 'a² + b² = c²', 'e^(iπ) + 1 = 0', '∇ · E = ρ/ε₀',
@@ -31,21 +32,17 @@ const LoginPage = ({ onLogin }) => {
     ];
 
     const createSparkles = () => {
-        const newSparkles = Array.from({ length: 10 }, (_, i) => ({
-            id: i,
-            left: `${20 + Math.random() * 60}%`,
-            top: `${40 + Math.random() * 10}%`,
-            delay: Math.random() * 0.5,
-        }));
-        setSparkles(newSparkles);
-        setTimeout(() => setSparkles([]), 1500);
+        // Sparkles disabled as requested
     };
 
     const handleLogoClick = () => {
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         setCurrentQuote(randomQuote);
         setShowQuote(true);
-        createSparkles();
+        // place quote at a random background position
+        const left = `${10 + Math.random() * 80}%`;
+        const top = `${10 + Math.random() * 70}%`;
+        setQuotePos({ left, top });
         setTimeout(() => setShowQuote(false), 4000);
     };
 
@@ -123,30 +120,25 @@ const LoginPage = ({ onLogin }) => {
                         animationDelay: `${idx * 1.5}s`,
                     }
                 }, `"${q}"`)
-            )
+            ),
+            // Clicked quote in background (clear and readable)
+            showQuote ? React.createElement('div', {
+                key: 'clicked-quote',
+                className: 'equation',
+                style: {
+                    left: quotePos.left,
+                    top: quotePos.top,
+                    fontSize: '24px',
+                    color: '#7c3aed',
+                    fontWeight: 800,
+                    opacity: 0.9,
+                    fontFamily: 'Georgia, serif',
+                    fontStyle: 'normal',
+                    animation: 'fadeInUp 0.4s ease-out',
+                }
+            }, `"${currentQuote}"`) : null
         ),
 
-        // Sparkles
-        ...sparkles.map(s => 
-            React.createElement('div', {
-                key: s.id,
-                className: 'sparkle',
-                style: {
-                    position: 'fixed',
-                    top: s.top,
-                    left: s.left,
-                    width: '8px',
-                    height: '8px',
-                    backgroundColor: '#fff',
-                    borderRadius: '50%',
-                    boxShadow: '0 0 10px 2px rgba(192, 132, 252, 0.8)',
-                    opacity: 0,
-                    animation: `sparkle 1s ease-out ${s.delay}s forwards`,
-                    pointerEvents: 'none',
-                    zIndex: 9999,
-                }
-            })
-        ),
 
         // Login UI
         React.createElement('div', { className: 'login-container' },
@@ -163,39 +155,15 @@ const LoginPage = ({ onLogin }) => {
                         type: 'button',
                         className: 'login-logo',
                         onClick: handleLogoClick,
+                        'aria-label': 'Show inspiration quote',
                         style: {
                             cursor: 'pointer',
                             transition: 'transform 0.2s',
-                            background: 'none',
                             border: 'none',
                             padding: 0
                         }
                     }, React.createElement('i', { className: 'fas fa-edit' })),
-                    
-                    showQuote && React.createElement('div', {
-                        className: 'quote-popup',
-                        style: {
-                            position: 'absolute',
-                            top: '180px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            background: 'rgba(124, 58, 237, 0.15)',
-                            backdropFilter: 'blur(10px)',
-                            border: '1px solid #d8b4fe',
-                            borderRadius: '12px',
-                            padding: '16px 20px',
-                            maxWidth: '300px',
-                            textAlign: 'center',
-                            color: '#a855f7',
-                            fontSize: '15px',
-                            fontWeight: 600,
-                            fontFamily: 'Georgia, serif',
-                            boxShadow: '0 10px 30px rgba(124, 58, 237, 0.2)',
-                            animation: 'fadeInUp 0.4s ease-out',
-                            zIndex: 100,
-                        }
-                    }, currentQuote),
-                    
+
                     React.createElement('h1', { className: 'login-title' }, 'Notes Pro'),
                     React.createElement('p', { className: 'login-subtitle' }, 'Welcome to your digital notebook')
                 ),
