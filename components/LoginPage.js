@@ -162,7 +162,7 @@ const LoginPage = ({ onLogin }) => {
                     left: quotePos.left,
                     top: quotePos.top,
             fontSize: '28px',
-            color: '#ffffff',
+                    color: '#7c3aed',
             fontWeight: 900,
             opacity: 1,
                     fontFamily: 'Georgia, serif',
