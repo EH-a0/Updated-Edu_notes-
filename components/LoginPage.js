@@ -28,7 +28,19 @@ const LoginPage = ({ onLogin }) => {
         "Capture today, inspire tomorrow.",
         "Great things start with small ideas.",
         "The mind is a notebook of possibilities.",
-        "One idea can change everything."
+        "One idea can change everything.",
+        "A short note can spark a big change.",
+        "Every masterpiece starts with a blank page.",
+        "Your notes are the seeds of your success.",
+        "Don’t let inspiration fade—write it down!",
+        "A written thought is a remembered thought.",
+        "Notes today, wisdom tomorrow.",
+        "Organize your mind, one note at a time.",
+        "The best ideas are the ones you remember.",
+        "A notebook is a time machine for your mind.",
+        "Your future self will thank you for your notes.",
+        "Every note is a step toward your goals.",
+        "Turn chaos into clarity—take a note."
     ];
 
     const createSparkles = () => {
