@@ -159,12 +159,16 @@ const LoginPage = ({ onLogin }) => {
                 }
             },
                 React.createElement('div', { className: 'login-header' },
-                    React.createElement('div', {
+                    React.createElement('button', {
+                        type: 'button',
                         className: 'login-logo',
                         onClick: handleLogoClick,
                         style: {
                             cursor: 'pointer',
-                            transition: 'transform 0.2s'
+                            transition: 'transform 0.2s',
+                            background: 'none',
+                            border: 'none',
+                            padding: 0
                         }
                     }, React.createElement('i', { className: 'fas fa-edit' })),
                     
