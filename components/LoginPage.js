@@ -301,10 +301,18 @@ const LoginPage = ({ onLogin }) => {
                     )
                 ),
 
-                // Divider as: --------- or continue with ---------
-                React.createElement('div', { className: 'divider', style: { textAlign: 'center', margin: '24px 0', color: '#9ca3af', fontSize: '13px', fontStyle: 'italic' } }, 
-                    React.createElement('span', {}, '--------- or continue with ---------')
-                ),
+                // Custom divider line as requested
+                React.createElement('div', { 
+                    style: { 
+                        textAlign: 'center', 
+                        margin: '24px 0', 
+                        color: '#9ca3af', 
+                        fontSize: '13px', 
+                        fontStyle: 'italic', 
+                        letterSpacing: '0.5px',
+                        userSelect: 'none'
+                    } 
+                }, '------------------- or continue with ----------------------'),
 
                 React.createElement('button', { 
                     onClick: handleGoogleAuth, 
