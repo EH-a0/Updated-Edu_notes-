@@ -301,8 +301,9 @@ const LoginPage = ({ onLogin }) => {
                     )
                 ),
 
-                React.createElement('div', { className: 'divider' }, 
-                    React.createElement('span', {}, 'or continue with')
+                // Divider as: --------- or continue with ---------
+                React.createElement('div', { className: 'divider', style: { textAlign: 'center', margin: '24px 0', color: '#9ca3af', fontSize: '13px', fontStyle: 'italic' } }, 
+                    React.createElement('span', {}, '--------- or continue with ---------')
                 ),
 
                 React.createElement('button', { 
